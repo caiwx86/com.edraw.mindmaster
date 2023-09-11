@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.edraw.mindmaster</id>
+  <name>mindmaster</name>
+  <project_license>LicenseRef-proprietary</project_license>
+  <developer_name>edraw</developer_name>
+  <summary>Office</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <launchable type="desktop-id">com.edraw.mindmaster</launchable>
+  <url type="homepage">https://edrawsoft.cn</url>
+  <url type="help">https://www.edrawsoft.cn/help-center/</url>
+  <description>
+    <p>多功能，高颜值，易使用的专业思维导图软件</p>
+    <p>NOTE: 非官方Flatpak打包</p>
+  </description>
+  <categories>
+    <category>Office</category>
+  </categories>
+  <releases>
+    <release version="10.8.0" date="2023-09-11"/>
+  </releases>
+  <content_rating type="oars-1.1">
+  </content_rating>
+  <update_contact>1130200250_qq.com</update_contact>
+</component>

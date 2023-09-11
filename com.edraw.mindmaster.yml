@@ -1,0 +1,76 @@
+id: com.edraw.mindmaster
+runtime: org.freedesktop.Platform
+runtime-version: '21.08'
+sdk: org.freedesktop.Sdk
+tags:
+  - proprietary
+command: mindmaster 
+separate-locales: false
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=pulseaudio
+  - --share=network
+  - --device=all
+  - --env=TMPDIR=/var/tmp
+  - --env=QT_QPA_PLATFORM=xcb
+  - --env=QT_ENABLE_HIGHDPI_SCALING=1
+  - --env=QT_SCALE_FACTOR=1.75
+  - --env=QT_AUTO_SCREEN_SCALE_FACTOR=1.75
+  - --allow=devel
+  - --filesystem=host
+  - --filesystem=xdg-config/gtk-3.0:ro
+  - --filesystem=xdg-config/kdeglobals:ro
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/gtk-doc
+  - '*.la'
+
+modules:
+  - name: kerberos
+    subdir: src
+    sources:
+      - type: archive
+        url: https://kerberos.org/dist/krb5/1.20/krb5-1.20.tar.gz
+        sha256: 7e022bdd3c851830173f9faaa006a230a0e0fdad4c953e85bff4bf0da036e12f
+
+  - name: mindmaster 
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 apply_extra /app/bin/apply_extra
+      - install -Dm644 -t /app/share/applications/ ${FLATPAK_ID}.desktop
+        #- install -Dm644 -t /app/share/metainfo ${FLATPAK_ID}.metainfo.xml
+      - install -Dm755 mindmaster.sh /app/bin/mindmaster
+      - install -Dm755 /usr/bin/desktop-file-edit -t /app/bin/
+      - install -Dm755 /usr/bin/ar -t /app/bin/
+      - install -Dm755 /usr/lib/$(gcc -print-multiarch)/libbfd-*.so -t /app/lib/
+    sources:
+      - type: script
+        dest-filename: apply_extra
+        commands:
+          - ar x mindmaster.deb
+          - tar xf data.tar.xz
+          - mv opt/MindMaster-10 mindmaster
+          - |
+            for icon in 16 32 48 64 128 256; do
+            install -Dm 644 usr/share/icons/hicolor/${icon}x${icon}/apps/mindmaster.png /app/share/icons/hicolor/${icon}x${icon}/apps/com.edraw.mindmaster.png
+            done
+          - rm -r mindmaster.deb control.tar.* data.tar.xz debian-binary opt usr
+     
+      - type: file
+        path: mindmaster.sh
+
+      - type: file
+        path: com.edraw.mindmaster.desktop
+
+      - type: file
+        path: com.edraw.mindmaster.metainfo.xml
+
+      - type: extra-data 
+        filename: mindmaster.deb 
+        url: https://cc-download.edrawsoft.cn/mindmaster_cn_full5420.deb
+        sha256: 3f1d325124826ab7e54a04b45354b0d4685245e653e6829936f187d55fccf659
+        size: 430444980
+        only-arches: [x86_64]

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=MindMaster
+Exec=mindmaster %U
+Terminal=false
+Type=Application
+Icon=com.edraw.mindmaster
+StartupWMClass=mindmaster
+Categories=Office;
+Comment=mindmaster
